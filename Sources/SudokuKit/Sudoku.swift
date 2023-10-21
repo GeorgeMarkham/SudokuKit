@@ -18,7 +18,7 @@ public class Sudoku {
     }
     
     /// Initialises with empty NxN board filled by zeros
-    init(N: Int = 9) {
+    public init(N: Int = 9) {
         self.board = [[Int]](
             repeating: [Int](repeating: 0, count: N),
             count: N
@@ -81,7 +81,7 @@ public class Sudoku {
         && boxSafe(cell: cell, value: value)
     }
     
-    func generateBoard(withDifficulty difficulty: Difficulty = .easy) -> PuzzleBoard {
+    public func generateBoard(withDifficulty difficulty: Difficulty = .easy) -> PuzzleBoard {
         for i in 0..<SRN {
             let start = i * SRN
             let end = start+SRN
@@ -101,28 +101,6 @@ public class Sudoku {
         _ = finishGenerating(row: 0, col: SRN)
         
         return pokeHoles(numHoles: difficulty.numHolesRange.randomElement() ?? 40)
-    }
-    
-    private func pokeHoles(numHoles: Int = 50) -> PuzzleBoard {
-        var gameBoard: PuzzleBoard = self.board
-        
-        #if DEBUG
-        gameBoard.printBoard()
-        #endif
-        
-        for _ in 0 ..< numHoles {
-            var row = Int.random(in: 0 ..< N)
-            var col = Int.random(in: 0 ..< N)
-            
-            while gameBoard[row][col] == 0 {
-                row = Int.random(in: 0 ..< N)
-                col = Int.random(in: 0 ..< N)
-            }
-            
-            gameBoard[row][col] = 0
-        }
-        
-        return gameBoard
     }
     
     private func finishGenerating(row: Int, col: Int) -> Bool {
@@ -155,5 +133,27 @@ public class Sudoku {
         }
         
         return false
+    }
+    
+    private func pokeHoles(numHoles: Int = 50) -> PuzzleBoard {
+        var gameBoard: PuzzleBoard = self.board
+        
+        #if DEBUG
+        gameBoard.printBoard()
+        #endif
+        
+        for _ in 0 ..< numHoles {
+            var row = Int.random(in: 0 ..< N)
+            var col = Int.random(in: 0 ..< N)
+            
+            while gameBoard[row][col] == 0 {
+                row = Int.random(in: 0 ..< N)
+                col = Int.random(in: 0 ..< N)
+            }
+            
+            gameBoard[row][col] = 0
+        }
+        
+        return gameBoard
     }
 }
